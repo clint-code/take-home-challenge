@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import { Button, Box, Autocomplete, TextField, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
-import GetBooks from './GetBooks';
+import GetBooks from './components/GetBooks';
 
 import { 
   ApolloClient, 
@@ -44,7 +44,6 @@ const App = () => {
   return (
 
     <ApolloProvider client={client}>
-        {" "}
         <GetBooks />
     </ApolloProvider>
 

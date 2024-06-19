@@ -1,25 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import { Button, Box, Autocomplete, TextField, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
-import { useQuery, gql } from '@apollo/client';
-import {LOAD_BOOKS} from './GraphQL/Queries'
+import { useQuery } from '@apollo/client';
+import {LOAD_BOOKS} from '../GraphQL/Queries'
 
 const GetBooks = () => {
 
-    const {error, loading, data}  = useQuery(LOAD_BOOKS);
-    const {bookItems, setBooks} = useState([]);
+    const {error, loading, data, refetch}  = useQuery(LOAD_BOOKS);
+
+    // useEffect(() => {
+    //   if(data.length === 0){
+    //     console.log('Array is empty, fetching data');
+    //   } else {
+    //     console.log('Array is not empty:');
+    //     setBooks(data);
+    //   }
+    // }, [data]);
+
+    // console.log(data.books);
 
     useEffect(() => {
-      if(data.length === 0){
-        //setBooks(data.books);
-        console.log('Array is empty, fetching data');
-      } else {
-        console.log('Array is not empty:', data.books);
-        setBooks(data.books);
-      }
-   // console.log(data);
-    }, [data]);
-
-    //console.log(data.books[0]);
+        refetch();
+    }, []);
 
     //const books = ['Option 1', 'Option 2', 'Option 3'];
     //console.log(books);
@@ -47,8 +48,6 @@ const GetBooks = () => {
 
     <Box component="section" sx={{ p:2 }}>
 
-        <p>Hello world!!</p>
-
         {/* <Autocomplete
         options={books}
         autoHighlight
@@ -68,15 +67,14 @@ const GetBooks = () => {
         />*/}
         <Box component="section">
 
-        {/* <ImageList sx={{width:650}}>
+        <ImageList sx={{width:650}}>
             
-            {books.map((item => (
+            {data.books.map((item , i)=> (
             
-            <ImageListItem key={item.coverPhotoURL}>
-
+            <ImageListItem key={i}>
                 <img
                     srcSet={`${item.coverPhotoURL}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${item.coverPhotoURL}?w=248&fit=crop&auto=format`}
+                    src={`${item.coverPhotoURL}`}
                     alt={item.title}
                     loading="lazy"    
                 />
@@ -92,9 +90,9 @@ const GetBooks = () => {
 
             </ImageListItem>
 
-        )))}
+        ))}
 
-    </ImageList> */}
+    </ImageList> 
 
         </Box> 
 
