@@ -44,6 +44,7 @@ const App = () => {
   return (
 
     <ApolloProvider client={client}>
+        {" "}
         <GetBooks />
     </ApolloProvider>
 
