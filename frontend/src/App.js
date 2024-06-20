@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './App.css';
 
-import { Button, Box, Autocomplete, TextField, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 import GetBooks from './components/GetBooks';
 
 import { 
@@ -22,11 +21,6 @@ const errorLink = onError(({ graphqlErrors, networkError}) => {
       });
   }
 });
-
-// const link = from({
-//   errorLink,
-//   new HttpLink({uri: "http://localhost:4000/"}),
-// });
 
 const httpLink = new HttpLink({
   uri: "http://localhost:4000/",

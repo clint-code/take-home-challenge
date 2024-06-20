@@ -1,29 +1,20 @@
 import React, {useEffect} from 'react';
 import { Button, Box, Autocomplete, TextField, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import {LOAD_BOOKS} from '../GraphQL/Queries'
+import exampleImage from '../assets/image1.webp'
+
 
 const GetBooks = () => {
 
     const {error, loading, data, refetch}  = useQuery(LOAD_BOOKS);
-
-    // useEffect(() => {
-    //   if(data.length === 0){
-    //     console.log('Array is empty, fetching data');
-    //   } else {
-    //     console.log('Array is not empty:');
-    //     setBooks(data);
-    //   }
-    // }, [data]);
-
-    // console.log(data.books);
 
     useEffect(() => {
         refetch();
     }, []);
 
     //const books = ['Option 1', 'Option 2', 'Option 3'];
-    //console.log(books);
+
     // const bookData = [
     //   {
     //     img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
@@ -41,12 +32,20 @@ const GetBooks = () => {
     //     author: '@helloimnik',
     //   }
     // ]
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
   return (
 
+
     <Box component="section" sx={{ p:2 }}>
+{/* 
+        <picture>
+            <img src={`${exampleImage}?w=164&h=164&fit=crop&auto=format`}
+            alt='example'/>
+        </picture> */}
+       
 
         {/* <Autocomplete
         options={books}
@@ -65,34 +64,44 @@ const GetBooks = () => {
         )}
         renderInput={(params) => <TextField {...params} />}
         />*/}
+        
         <Box component="section">
 
-        <ImageList sx={{width:650}}>
+            <ImageList sx={{width:650}}>
+                
+                {data.books.map((item , i)=> (
+                    
+                    <ImageListItem key={i} sx={{padding: 2}}>
+                        {item.coverPhotoURL ? (
+
+                        <img
+                            srcSet={`${item.coverPhotoURL}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                            src={`${item.coverPhotoURL}?w=164&h=164&fit=crop&auto=format`}
+                            alt={item.title}
+                            loading="lazy"    
+                            />) : (
+                                <img src="https://via.placeholder.com/150" alt="Placeholder" />
+                            )}
+
+                        {/* <img src="https://via.placeholder.com/150" alt="Placeholder" /> */}
+              
+                        <ImageListItemBar
+                            title={item.title}
+                            subtitle={<span>by: {item.author}</span>}
+                            position="below"
+                        />
+
+                        <Button color="success">
+                            Add to Reading List
+                        </Button>
+
+                    </ImageListItem>
+
+                ))}
+
+            </ImageList> 
+
             
-            {data.books.map((item , i)=> (
-            
-            <ImageListItem key={i}>
-                <img
-                    srcSet={`${item.coverPhotoURL}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${item.coverPhotoURL}`}
-                    alt={item.title}
-                    loading="lazy"    
-                />
-                <ImageListItemBar
-                    title={item.title}
-                    subtitle={<span>by: {item.author}</span>}
-                    position="below"
-                />
-
-                <Button color="success">
-                    Add to Reading List
-                </Button>
-
-            </ImageListItem>
-
-        ))}
-
-    </ImageList> 
 
         </Box> 
 
